@@ -1,12 +1,8 @@
 import Image from "next/image";
-import SubmitButton from "@/components/SubMitButton";
-import HomeMain from "@/public/images/home_main.png";
-import sectionLink from "@/public/images/section_link.png";
-import sectionFolder from "@/public/images/section_folder.png";
-import sectionShare from "@/public/images/section_share.png";
-import sectionSearch from "@/public/images/section_search.png";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import useAuthStore from "@/store/useAuthStore";
+import SubmitButton from "@/components/SubMitButton";
+import { useRouter } from "next/router";
 
 const sectionStyle =
   "flex flex-col md:flex-row md:items-center md:gap-[51px] lg:flex-row lg:items-center lg:gap-[157px]";
@@ -33,28 +29,27 @@ const HomePage = () => {
   return (
     <main>
       <div className="flex flex-col items-center bg-gray100">
-        <h2 className="mt-[28px] text-[32px] leading-[42px] font-bold md:mt-[40px] lg:mt-[70px] md:text-[64px] md:leading-[80px] lg:text-[64px] lg:leading-[80px] text-center">
+        <h2 className="mt-[28px] md:mt-[40px] lg:mt-[70px] font-bold text-[32px] text-center md:text-[64px] lg:text-[64px] leading-[42px] md:leading-[80px] lg:leading-[80px]">
           <span className="gradient-text">세상의 모든 정보</span>
           를<br /> 쉽게 저장하고
           <br className="lg:hidden" />
-          <span className="hidden lg:inline">&nbsp;</span>관리해 보세요
+          <span className="lg:inline hidden">&nbsp;</span>관리해 보세요
         </h2>
-        <SubmitButton
-          onClick={handleClick}
-          className="sm:mt-[24px] sm:w-[200px] sm:h-[50px] sm:text-[14px] md:mt-[40px] md:w-[350px] md:h-[53px] md:text-[18px] lg:mt-[40px] lg:w-[350px] lg:h-[53px] lg:text-[18px]"
-        >
-          링크 추가하기
-        </SubmitButton>
+        <Link legacyBehavior href={user ? "/link" : "/login"}>
+          <SubmitButton className="sm:mt-[24px] md:mt-[40px] lg:mt-[40px] sm:w-[200px] md:w-[350px] lg:w-[350px] sm:h-[50px] md:h-[53px] lg:h-[53px] sm:text-[14px] md:text-[18px] lg:text-[18px]">
+            링크 추가하기
+          </SubmitButton>
+        </Link>
         <Image
-          src={HomeMain}
+          src={"/images/home_main.png"}
           width={1118}
           height={540}
           alt="배너"
-          className="mt-[37.56px] w-[302.79px] h-[146.44px] md:mt-[69.07px] md:w-[650.3px] md:h-[313.93px] lg:mt-[90px] lg:w-[1118px] lg:h-[540px]"
+          className="mt-[37.56px] md:mt-[69.07px] lg:mt-[90px] w-[302.79px] md:w-[650.3px] lg:w-[1118px] h-[146.44px] md:h-[313.93px] lg:h-[540px]"
         />
       </div>
 
-      <div className="flex flex-col items-center gap-[80px] px-[33px] pt-[40px] pb-[80px] md:pt-[80px] md:pb-[170px] md:gap-[100px] lg:pt-[120px]">
+      <div className="flex flex-col items-center gap-[80px] md:gap-[100px] px-[33px] pt-[40px] md:pt-[80px] lg:pt-[120px] pb-[80px] md:pb-[170px]">
         <section className={sectionStyle}>
           <div className={sectionContent}>
             <strong className={sectionTitleStyle}>
@@ -67,7 +62,7 @@ const HomePage = () => {
             </em>
           </div>
           <Image
-            src={sectionLink}
+            src={"/images/section_link.png"}
             width={550}
             height={450}
             alt="링크"
@@ -88,7 +83,7 @@ const HomePage = () => {
             </em>
           </div>
           <Image
-            src={sectionFolder}
+            src={"/public/images/section_folder.png"}
             width={550}
             height={450}
             alt="폴더"
@@ -108,7 +103,7 @@ const HomePage = () => {
             </em>
           </div>
           <Image
-            src={sectionShare}
+            src={"/images/section_share.png"}
             width={550}
             height={450}
             alt="공유"
@@ -128,7 +123,7 @@ const HomePage = () => {
             </em>
           </div>
           <Image
-            src={sectionSearch}
+            src={"/images/section_search.png"}
             width={550}
             height={450}
             alt="검색"

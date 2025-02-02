@@ -3,6 +3,7 @@ import Head from "next/head";
 import Footer from "@/components/Layout/Footer";
 import Header from "@/components/Layout/Header";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
 import type { AppProps } from "next/app";
@@ -48,6 +49,7 @@ export default function App({ Component, pageProps }: AppProps) {
           {!hidePaths.includes(router.pathname) && <Header />}
           <div className="flex-grow">
             <Component {...pageProps} />
+            <ReactQueryDevtools initialIsOpen={false} />
           </div>
           {!hidePaths.includes(router.pathname) && <Footer />}
         </div>

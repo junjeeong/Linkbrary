@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { proxy } from "@/lib/api/axiosInstanceApi";
 import { LinkData } from "@/types/linkTypes";
@@ -32,23 +33,18 @@ const useFetchLinks = (
     return res.data;
   };
 
-  const { data, isLoading, isSuccess, isError, error } = useQuery({
+  const { isLoading } = useQuery({
     queryKey: ["links", query, pathname, isTablet], // query, pathname, isTablet이 바뀔 때 fresh -> stale
     queryFn: fetchLinks,
     enabled: !!query, // query가 존재할 때만 요청
+    staleTime: 1000 * 60 * 5, // 5분 동안 fresh 상태 유지
+    select: (data) => setLinkCardList(data.list, data.totalCount),
   });
 
   // 로딩 상태 설정
-  setIsLoading(isLoading);
-
-  if (isSuccess && data) {
-    setLinkCardList(data.list, data.totalCount);
-  } else if (isError) {
-    console.error(
-      "tanstack-query error: 링크 목록 업데이트에 실패했습니다.",
-      error
-    );
-  }
+  useEffect(() => {
+    setIsLoading(isLoading);
+  }, [isLoading, setIsLoading]);
 };
 
 export default useFetchLinks;

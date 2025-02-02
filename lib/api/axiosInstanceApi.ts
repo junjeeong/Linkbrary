@@ -1,12 +1,12 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "/",
+  baseURL: "https://linkbrary-api.vercel.app/junyeong-9",
 });
 
 export const proxy = axios.create({
-  baseURL: "https://linkbrary-9-99.vercel.app",
-  // baseURL: "http://localhost:3000",
+  // baseURL: "https://linkbrary-9-99.vercel.app",
+  baseURL: "http://localhost:3000",
 });
 
 proxy.interceptors.response.use(

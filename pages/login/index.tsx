@@ -1,12 +1,12 @@
+import Link from "next/link";
 import useForm from "@/hooks/useForm";
 import AuthInput from "@/components/Auth/AuthInput";
 import SnsLogin from "@/components/Auth/SnsLogin";
 import SubmitButton from "@/components/SubMitButton";
 import AuthLayout from "@/components/Layout/AuthLayout";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import useAuthStore from "@/store/useAuthStore";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const LoginPage = () => {
   const { values, errors, handleChange, handleBlur, handleSubmit } =
@@ -23,17 +23,17 @@ const LoginPage = () => {
   return (
     <div className="bg-gray100 min-h-screen">
       <AuthLayout>
-        <p className="mt-[16px] text-base font-normal">
+        <p className="mt-[16px] font-normal text-base">
           회원이 아니신가요?{" "}
           <Link
             href="/signup"
-            className="cursor-pointer text-purple100 underline font-semibold"
+            className="font-semibold text-purple100 underline cursor-pointer"
           >
             회원가입하기
           </Link>
         </p>
         <form
-          className="w-full sm:max-w-[325px] md:max-w-[400px] lg:max-w-[400px] mt-[30px]"
+          className="mt-[30px] w-full sm:max-w-[325px] md:max-w-[400px] lg:max-w-[400px]"
           aria-labelledby="login-form"
         >
           <AuthInput

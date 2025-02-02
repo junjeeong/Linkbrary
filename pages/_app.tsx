@@ -1,10 +1,13 @@
+import "@/styles/globals.css";
+import Head from "next/head";
 import Footer from "@/components/Layout/Footer";
 import Header from "@/components/Layout/Header";
-import "@/styles/globals.css";
-import type { AppProps } from "next/app";
-import Head from "next/head";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
+import type { AppProps } from "next/app";
+
+const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -37,16 +40,18 @@ export default function App({ Component, pageProps }: AppProps) {
         src="https://developers.kakao.com/sdk/js/kakao.min.js"
       ></script>
 
-      <div className="min-h-screen flex flex-col">
-        <div>
-          <Toaster />
+      <QueryClientProvider client={queryClient}>
+        <div className="flex flex-col min-h-screen">
+          <div>
+            <Toaster />
+          </div>
+          {!hidePaths.includes(router.pathname) && <Header />}
+          <div className="flex-grow">
+            <Component {...pageProps} />
+          </div>
+          {!hidePaths.includes(router.pathname) && <Footer />}
         </div>
-        {!hidePaths.includes(router.pathname) && <Header />}
-        <div className="flex-grow">
-          <Component {...pageProps} />
-        </div>
-        {!hidePaths.includes(router.pathname) && <Footer />}
-      </div>
+      </QueryClientProvider>
     </>
   );
 }

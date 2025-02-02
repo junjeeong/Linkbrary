@@ -18,14 +18,6 @@ const HomePage = () => {
   const router = useRouter();
   const { user } = useAuthStore();
 
-  const handleClick = async () => {
-    if (user) {
-      await router.push("/link");
-    } else {
-      await router.push("/login");
-    }
-  };
-
   return (
     <main>
       <div className="flex flex-col items-center bg-gray100">

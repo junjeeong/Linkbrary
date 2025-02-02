@@ -1,7 +1,8 @@
 {
   "extends": [
     "next/core-web-vitals",
-    "plugin:prettier/recommended" // Prettier와 충돌 방지
+    "plugin:prettier/recommended", // Prettier와 충돌 방지
+    "plugin:@tanstack/eslint-plugin-query/recommended" // tanstack-query eslint 규칙
   ],
   "rules": {
     "prettier/prettier": ["error"] // Prettier의 규칙을 ESLint가 오류로 처리

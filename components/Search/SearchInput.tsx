@@ -1,37 +1,27 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import Image from "next/image";
-import useDebounce from "@/hooks/useDebounce";
+import { ChangeEvent, useState } from "react";
 
-export const SearchInput = () => {
-  const router = useRouter();
+export const SearchInput = ({ setQueryKeys }: { setQueryKeys: any }) => {
   const [value, setValue] = useState("");
 
-  const debouncedValue = useDebounce(value, 200);
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
     setValue(e.target.value);
   };
 
-  useEffect(() => {
-    if (debouncedValue) {
-      router.push({
-        pathname: router.pathname,
-        query: { ...router.query, search: debouncedValue },
-      });
-    }
-  }, [debouncedValue]);
-
   const handleClick = () => {
     setValue("");
-    router.push("/link");
+    setQueryKeys((prev: any) => ({ ...prev, search: "" }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setQueryKeys((prev: any) => ({ ...prev, search: value }));
   };
 
   return (
     <form
-      onSubmit={(e) => e.preventDefault()}
-      className="flex gap-[8px] w-full h-[54px] items-center px-[16px] py-[15px] bg-gray-100 rounded-[10px] md:h-[54px] sm:h-[43px] transition-all"
+      onSubmit={handleSubmit}
+      className="flex items-center gap-[8px] bg-gray-100 px-[16px] py-[15px] rounded-[10px] w-full h-[54px] sm:h-[43px] md:h-[54px] transition-all"
     >
       <Image
         src="/icons/search.svg"
@@ -47,7 +37,7 @@ export const SearchInput = () => {
       />
       {value && (
         <button
-          className="rounded-full bg-white size-6 font-bold text-gray-500 flex items-center justify-center"
+          className="flex justify-center items-center bg-white rounded-full font-bold text-gray-500 size-6"
           type="button"
           onClick={handleClick}
         >

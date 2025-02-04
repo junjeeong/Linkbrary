@@ -8,9 +8,10 @@ const useRerenderFolderList = (
   setFolderList: React.Dispatch<React.SetStateAction<FolderData[]>>
 ) => {
   const { data, isSuccess, isError, error } = useQuery({
-    queryKey: ["folders"], //
+    queryKey: ["folders"],
     queryFn: getFolders,
     enabled: isOpen,
+    staleTime: 1000 * 60 * 5,
   });
 
   if (isSuccess) {

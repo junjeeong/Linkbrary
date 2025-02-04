@@ -4,7 +4,3 @@ export interface FolderData {
   name: string;
   linkCount: number;
 }
-
-export interface FolderListData {
-  folderList: FolderData[];
-}

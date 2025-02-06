@@ -28,17 +28,21 @@ const useFetchLinks = (
           ? `/api/folders/${folder}/links`
           : "/api/links";
 
-    const res = await proxy.get(endpoint, {
-      params: {
-        page: page,
-        pageSize: isTablet ? 6 : 9,
-        search: search,
-      },
-    });
-    return res.data;
+    try {
+      const res = await proxy.get(endpoint, {
+        params: {
+          page: page,
+          pageSize: isTablet ? 6 : 9,
+          search: search,
+        },
+      });
+      return res.data;
+    } catch (error) {
+      throw new Error("새로운 링크 목록을 불러오는데 실패했습니다");
+    }
   };
 
-  const { data, isSuccess, isLoading } = useQuery({
+  const { data, error, isSuccess, isLoading } = useQuery({
     queryKey: ["links", folder, search, pathname, isTablet], // query, pathname, isTablet이 바뀔 때 fresh -> stale
     queryFn: fetchLinks,
     staleTime: 1000 * 60 * 5, // 5분 동안 fresh 상태 유지
@@ -48,8 +52,10 @@ const useFetchLinks = (
   useEffect(() => {
     if (isSuccess) {
       setLinkListData({ list: data.list, totalCount: data.totalCount });
+    } else if (error) {
+      console.error(error.message);
     }
-  }, [data, isSuccess, setLinkListData]);
+  }, [data, error, isSuccess, setLinkListData]);
 
   // 로딩 상태 설정
   useEffect(() => {

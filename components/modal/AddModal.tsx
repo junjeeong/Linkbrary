@@ -1,18 +1,20 @@
-import { FolderItemType } from "@/types/modalTypes";
 import FolderList from "./modalComponents/FolderList";
 import ModalContainer from "./modalComponents/ModalContainer";
 import SubmitButton from "../SubMitButton";
-import { useState } from "react";
-import { postLink } from "@/lib/api/link";
 import useModalStore from "@/store/useModalStore";
 import toast from "react-hot-toast";
 import toastMessages from "@/lib/toastMessage";
+import { useState } from "react";
 import { useRouter } from "next/router";
+import { postLink } from "@/lib/api/link";
+import { FolderItemType } from "@/types/modalTypes";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AddModal = ({ list, link }: { list: FolderItemType[]; link: string }) => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const { closeModal } = useModalStore();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const handleSubmit = async () => {
     const body = {
@@ -25,6 +27,7 @@ const AddModal = ({ list, link }: { list: FolderItemType[]; link: string }) => {
       try {
         await postLink(body);
         toast.success(toastMessages.success.addLink);
+        queryClient.invalidateQueries({ queryKey: ["links"] });
         router.push(`/link?folder=${selectedId}`);
       } catch (error) {
         toast.error(toastMessages.error.addLink);

@@ -89,17 +89,17 @@ const LinkPage = ({
     pathname: router.pathname,
     page: query.page,
     search: query.search,
-    folder: query.folder,
+    folderId: query.folder,
     isTablet: isTablet,
   });
-  const [folderName] = useFolderName(queryKeys.folder);
+  const [folderName] = useFolderName(queryKeys.folderId);
 
   useEffect(() => {
     setQueryKeys({
       pathname: router.pathname,
       page: query.page,
       search: query.search as string,
-      folder: query.folder as string,
+      folderId: query.folder as string,
       isTablet: isTablet,
     });
   }, [
@@ -136,12 +136,12 @@ const LinkPage = ({
             {!isMobile && <AddFolderButton setFolderList={setFolderList} />}
           </div>
           <div className="flex justify-between items-center my-[24px]">
-            {queryKeys.folder && (
+            {queryKeys.folderId && (
               <>
                 <h1 className="text-2xl">{folderName as string}</h1>
                 <FolderActionsMenu
                   setFolderList={setFolderList}
-                  folderId={queryKeys.folder}
+                  folderId={queryKeys.folderId}
                   linkCount={linkListData.totalCount}
                 />
               </>

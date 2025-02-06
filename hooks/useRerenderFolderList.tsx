@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getFolders } from "@/lib/api/folder";
-import { FolderData } from "@/types/folderTypes";
+import { FolderData } from "@/types/folderType";
 
 // 모달이 닫혔을 때 새로운 FolderList를 보여주는 커스텀 훅
 const useRerenderFolderList = (
@@ -8,7 +8,7 @@ const useRerenderFolderList = (
   setFolderList: React.Dispatch<React.SetStateAction<FolderData[]>>
 ) => {
   const { data, isSuccess, isError, error } = useQuery({
-    queryKey: ["folders"],
+    queryKey: ["folderList"],
     queryFn: getFolders,
     enabled: isOpen,
     staleTime: 1000 * 60 * 5,

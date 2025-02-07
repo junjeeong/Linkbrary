@@ -1,12 +1,9 @@
-import { useEffect, useState } from "react";
 import { GetServerSidePropsContext } from "next";
-import { useRouter } from "next/router";
 import { parse } from "cookie";
 import { LinkData } from "@/types/linkTypes";
 import { Modal } from "@/components/modal/modalManager/ModalManager";
 import { SearchInput } from "../../components/Search/SearchInput";
 import { FolderData } from "@/types/folderType";
-import useModalStore from "@/store/useModalStore";
 import Pagination from "@/components/Pagination";
 import AddLinkInput from "@/components/Link/AddLinkInput";
 import Container from "@/components/Layout/Container";
@@ -18,10 +15,9 @@ import CardsLayout from "@/components/Layout/CardsLayout";
 import LinkCard from "@/components/Link/LinkCard";
 import RenderEmptyLinkMessage from "@/components/Link/RenderEmptyLinkMessage";
 import useFetchLinks from "@/hooks/useFetchLinks";
-import useViewport from "@/hooks/useViewport";
-import useFolderName from "@/hooks/useFolderName";
 import LinkCardSkeleton from "@/components/skeleton/LinkCardSkeleton";
 import fetchInitialData from "./fetchInitialData";
+import useLinkPageState from "./useLinkPageState";
 
 interface LinkPageProps {
   linkList: LinkData[];
@@ -64,41 +60,19 @@ const LinkPage = ({
   folderList: initialFolderList,
   totalCount: initialTotalCount,
 }: LinkPageProps) => {
-  const router = useRouter();
-  const { query } = router;
-  const { isMobile, isTablet } = useViewport();
-  const { isOpen } = useModalStore();
-  const [linkListData, setLinkListData] = useState({
-    list: initialLinkList,
-    totalCount: initialTotalCount,
-  });
-  const [folderList, setFolderList] = useState(initialFolderList);
-  const [isLoading, setIsLoading] = useState(false);
-  const [queryKeys, setQueryKeys] = useState({
-    pathname: router.pathname,
-    page: query.page,
-    search: query.search,
-    folderId: query.folder,
-    isTablet: isTablet,
-  });
-  const [folderName] = useFolderName(queryKeys.folderId);
-
-  useEffect(() => {
-    setQueryKeys({
-      pathname: router.pathname,
-      page: query.page,
-      search: query.search as string,
-      folderId: query.folder as string,
-      isTablet: isTablet,
-    });
-  }, [
-    query.search,
-    isTablet,
-    query.folder,
-    router.pathname,
+  const {
+    linkListData,
+    setLinkListData,
+    folderList,
+    setFolderList,
+    folderName,
+    isLoading,
+    setIsLoading,
+    queryKeys,
     setQueryKeys,
-    query.page,
-  ]);
+    isMobile,
+    isOpen,
+  } = useLinkPageState(initialLinkList, initialFolderList, initialTotalCount);
 
   // 링크페이지의 query가 바뀌면 새로운 리스트로 업데이트 해주는 훅
   useFetchLinks(setLinkListData, setIsLoading, queryKeys);

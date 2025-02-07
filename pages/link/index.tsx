@@ -6,7 +6,6 @@ import { LinkData } from "@/types/linkTypes";
 import { Modal } from "@/components/modal/modalManager/ModalManager";
 import { SearchInput } from "../../components/Search/SearchInput";
 import { FolderData } from "@/types/folderType";
-import axiosInstance from "@/lib/api/axiosInstanceApi";
 import useModalStore from "@/store/useModalStore";
 import Pagination from "@/components/Pagination";
 import AddLinkInput from "@/components/Link/AddLinkInput";
@@ -22,6 +21,7 @@ import useFetchLinks from "@/hooks/useFetchLinks";
 import useViewport from "@/hooks/useViewport";
 import useFolderName from "@/hooks/useFolderName";
 import LinkCardSkeleton from "@/components/skeleton/LinkCardSkeleton";
+import fetchInitialData from "./fetchInitialData";
 
 interface LinkPageProps {
   linkList: LinkData[];
@@ -37,35 +37,24 @@ export const getServerSideProps = async (
   const cookies = parse(req.headers.cookie || "");
   const accessToken = cookies.accessToken;
 
-  // accessToken이 없으면 클라이언트에서 실행될 때 /login 페이지로 이동시킴.
   if (!accessToken) {
     return {
       redirect: {
         destination: "/login",
-        permanent: false,
       },
     };
   }
 
-  const fetchData = async (endpoint: string) => {
-    const res = await axiosInstance.get(endpoint, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return res.data;
-  };
-
-  const [links, folders] = await Promise.all([
-    fetchData("/links"),
-    fetchData("/folders"),
+  const [linkList, folderList]: any = await Promise.all([
+    fetchInitialData(accessToken, "/links"),
+    fetchInitialData(accessToken, "/folders"),
   ]);
 
   return {
     props: {
-      linkList: links.list || [],
-      folderList: folders || [],
-      totalCount: links.totalCount || 0,
+      linkList: linkList.list || [],
+      folderList: folderList,
+      totalCount: linkList.totalCount || 0,
     },
   };
 };

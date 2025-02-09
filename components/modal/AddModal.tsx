@@ -27,7 +27,7 @@ const AddModal = ({ list, link }: { list: FolderItemType[]; link: string }) => {
       try {
         await postLink(body);
         toast.success(toastMessages.success.addLink);
-        queryClient.invalidateQueries({ queryKey: ["links"] });
+        queryClient.invalidateQueries({ queryKey: ["linkList"] });
         router.push(`/link?folder=${selectedId}`);
       } catch (error) {
         toast.error(toastMessages.error.addLink);

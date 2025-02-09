@@ -43,7 +43,7 @@ const useFetchLinks = (
   };
 
   const { data, error, isSuccess, isLoading } = useQuery({
-    queryKey: ["links", folder, search, pathname, isTablet], // query, pathname, isTablet이 바뀔 때 fresh -> stale
+    queryKey: ["linkList", folder, search, pathname, isTablet], // query, pathname, isTablet이 바뀔 때 fresh -> stale
     queryFn: fetchLinks,
     staleTime: 1000 * 60 * 5, // 5분 동안 fresh 상태 유지
   });

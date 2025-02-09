@@ -3,7 +3,7 @@ import { getFolder } from "@/lib/api/folder";
 
 const useFolderName = (folderId: string | string[] | undefined) => {
   const { data: folderName, error } = useQuery({
-    queryKey: ["getFolderName", folderId],
+    queryKey: ["folderName", folderId],
     queryFn: async () => {
       if (!folderId) return null; // folderId가 없을 경우 기본값
       const res = await getFolder(folderId as string);

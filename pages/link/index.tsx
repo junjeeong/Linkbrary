@@ -4,20 +4,16 @@ import { LinkData } from "@/types/linkTypes";
 import { Modal } from "@/components/modal/modalManager/ModalManager";
 import { SearchInput } from "../../components/Search/SearchInput";
 import { FolderData } from "@/types/folderType";
-import Pagination from "@/components/Pagination";
+import { LinkListRenderer } from "./LinkListRenderer";
 import AddLinkInput from "@/components/Link/AddLinkInput";
 import Container from "@/components/Layout/Container";
 import SearchResultMessage from "@/components/Search/SearchResultMessage";
 import FolderTag from "@/components/Folder/FolderTag";
 import AddFolderButton from "@/components/Folder/AddFolderButton";
 import FolderActionsMenu from "@/components/Folder/FolderActionsMenu";
-import CardsLayout from "@/components/Layout/CardsLayout";
-import LinkCard from "@/components/Link/LinkCard";
-import RenderEmptyLinkMessage from "@/components/Link/RenderEmptyLinkMessage";
 import useFetchLinks from "@/hooks/useFetchLinks";
-import LinkCardSkeleton from "@/components/skeleton/LinkCardSkeleton";
-import fetchInitialData from "./fetchInitialData";
 import useLinkPageState from "./useLinkPageState";
+import fetchInitialData from "./fetchInitialData";
 
 interface LinkPageProps {
   linkList: LinkData[];
@@ -110,24 +106,7 @@ const LinkPage = ({
               </>
             )}
           </div>
-          {isLoading ? (
-            <div className="gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              {[...Array(3)].map((_, index) => (
-                <LinkCardSkeleton key={index} />
-              ))}
-            </div>
-          ) : linkListData.list.length !== 0 ? (
-            <>
-              <CardsLayout>
-                {linkListData.list.map((link) => (
-                  <LinkCard key={link.id} info={link} />
-                ))}
-              </CardsLayout>
-              <Pagination totalCount={linkListData.totalCount} />
-            </>
-          ) : (
-            <RenderEmptyLinkMessage />
-          )}
+          <LinkListRenderer isLoading={isLoading} linkListData={linkListData} />
         </main>
       </Container>
       {isOpen && <Modal />}

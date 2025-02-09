@@ -1,13 +1,13 @@
-import { ChangeEvent, useState } from "react";
-import { useLinkCardStore } from "@/store/useLinkCardStore";
 import ModalContainer from "./modalComponents/ModalContainer";
 import ModalInput from "./modalComponents/ModalInput";
 import useModalStore from "@/store/useModalStore";
 import SubmitButton from "../SubMitButton";
 import toast from "react-hot-toast";
 import toastMessages from "@/lib/toastMessage";
+import { ChangeEvent, useState } from "react";
 import { urlRegex } from "@/util/regex";
-import { error } from "console";
+import { useLinkCardStore } from "@/store/useLinkCardStore";
+import { useQueryClient } from "@tanstack/react-query";
 
 const EditLink = ({
   folderName,
@@ -18,6 +18,7 @@ const EditLink = ({
   link: string;
   linkId: number;
 }) => {
+  const queryClient = useQueryClient();
   const [value, setValue] = useState("");
   const { closeModal } = useModalStore();
   const { updateLink } = useLinkCardStore();
@@ -25,6 +26,7 @@ const EditLink = ({
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
+
   const handleSubmit = async () => {
     const body = {
       url: value,
@@ -38,6 +40,7 @@ const EditLink = ({
     } else {
       try {
         await updateLink(linkId, body);
+        queryClient.invalidateQueries({ queryKey: ["links"] });
         closeModal();
         toast.success(toastMessages.success.editLink);
       } catch (err) {

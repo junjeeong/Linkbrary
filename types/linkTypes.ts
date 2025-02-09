@@ -1,3 +1,5 @@
+import { FolderData } from "./folderType";
+
 export interface LinkData {
   id: number;
   favorite: boolean;
@@ -6,4 +8,10 @@ export interface LinkData {
   imageSource: string;
   description: string;
   createdAt: string;
+}
+
+export interface LinkPageProps {
+  linkList: LinkData[];
+  folderList: FolderData[];
+  totalCount: number;
 }
